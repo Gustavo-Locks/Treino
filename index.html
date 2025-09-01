@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plano de Treino Interativo – Agosto</title>
+    <title>Plano de Treino Interativo – Meia Maratona (Setembro)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Chosen Palette: Warm Neutral with Muted Teal Accent -->
-    <!-- Application Structure Plan: A dashboard-style layout was chosen to enhance usability. The primary interaction is selecting a week via top navigation buttons. This action dynamically updates the main content area, which displays daily workout details in a card-based grid for clarity and responsiveness. A summary chart visualizes the weekly running volume, providing an immediate overview of the training progression (build-up, peak, and taper). This structure breaks down the dense information from the original table into manageable, focused views, making the plan easier to follow day-by-day and understand from a high level. -->
-    <!-- Visualization & Content Choices: Report Info: Weekly training schedule -> Goal: Organize & Inform -> Viz/Presentation: Interactive daily cards (HTML/CSS) replacing a static table. Interaction: Week selection buttons (JS) to filter content. Justification: Improves focus and mobile usability. | Report Info: Weekly running distances -> Goal: Show Change/Progression -> Viz/Presentation: Bar Chart (Chart.js/Canvas). Interaction: Bar for the selected week is highlighted. Justification: Visually communicates the core training principle of progressive overload and tapering, which is a key story in the data. -->
+    <!-- Chosen Palette: Cool Blue and Slate -->
+    <!-- Application Structure Plan: This application uses a weekly dashboard structure, which is ideal for a single-month, high-intensity training plan. Top navigation buttons allow the user to switch between the four weeks of September. The main view presents a 7-day grid of workout cards, providing a clear and comprehensive overview of the entire week's schedule. A bar chart visualizes the weekly running volume, highlighting the progression towards a peak in week 3 and the subsequent taper in week 4. This structure is highly intuitive for tracking a structured, progressive training load. -->
+    <!-- Visualization & Content Choices: Report Info: 4-week training schedule for a half marathon -> Goal: Organize & Inform -> Viz/Presentation: Interactive weekly views with a 7-day card grid (HTML/CSS). Interaction: Week selection buttons (JS). Justification: Provides a complete daily overview, which is necessary for a plan with varied activities like running, gym, and mobility. | Report Info: Weekly running distance -> Goal: Show Change/Progression -> Viz/Presentation: Bar Chart (Chart.js/Canvas). Interaction: Highlights the selected week's bar. Justification: Effectively communicates the training load's progression and tapering phase, culminating in the race week. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
         body {
@@ -32,7 +32,7 @@
             }
         }
         .nav-button.active {
-            background-color: #0f766e;
+            background-color: #2563eb;
             color: #ffffff;
             font-weight: 600;
         }
@@ -41,29 +41,28 @@
         }
     </style>
 </head>
-<body class="bg-stone-50 text-stone-800">
+<body class="bg-slate-50 text-slate-800">
 
     <div class="container mx-auto p-4 md:p-8">
         <header class="text-center mb-8">
-            <h1 class="text-3xl md:text-4xl font-bold text-teal-900 mb-2">📅 Plano de Treinos – Agosto</h1>
-            <p class="text-stone-600 max-w-3xl mx-auto">A sua preparação para a meia maratona, agora de forma interativa. Navegue pelas semanas para ver os detalhes de cada treino e acompanhe a sua progressão de volume no gráfico abaixo.</p>
+            <h1 class="text-3xl md:text-4xl font-bold text-blue-800 mb-2">📅 Plano de Treino – Meia Maratona (Setembro 2025)</h1>
+            <p class="text-slate-600 max-w-3xl mx-auto">Seu plano de treino detalhado para a prova de 21.1km. Selecione a semana para ver as atividades de cada dia.</p>
         </header>
 
         <nav class="flex flex-wrap justify-center gap-2 mb-8">
-            <button id="btn-week-1" data-week="1" class="nav-button w-full sm:w-auto text-sm md:text-base bg-white border border-stone-300 rounded-lg px-4 py-2 text-stone-700 hover:bg-teal-50">Semana 1</button>
-            <button id="btn-week-2" data-week="2" class="nav-button w-full sm:w-auto text-sm md:text-base bg-white border border-stone-300 rounded-lg px-4 py-2 text-stone-700 hover:bg-teal-50">Semana 2</button>
-            <button id="btn-week-3" data-week="3" class="nav-button w-full sm:w-auto text-sm md:text-base bg-white border border-stone-300 rounded-lg px-4 py-2 text-stone-700 hover:bg-teal-50">Semana 3</button>
-            <button id="btn-week-4" data-week="4" class="nav-button w-full sm:w-auto text-sm md:text-base bg-white border border-stone-300 rounded-lg px-4 py-2 text-stone-700 hover:bg-teal-50">Semana 4</button>
-            <button id="btn-week-5" data-week="5" class="nav-button w-full sm:w-auto text-sm md:text-base bg-white border border-stone-300 rounded-lg px-4 py-2 text-stone-700 hover:bg-teal-50">Semana 5</button>
+            <button data-week="1" class="nav-button w-auto text-sm md:text-base bg-white border border-slate-300 rounded-lg px-4 py-2 text-slate-700 hover:bg-blue-50">Semana 1</button>
+            <button data-week="2" class="nav-button w-auto text-sm md:text-base bg-white border border-slate-300 rounded-lg px-4 py-2 text-slate-700 hover:bg-blue-50">Semana 2</button>
+            <button data-week="3" class="nav-button w-auto text-sm md:text-base bg-white border border-slate-300 rounded-lg px-4 py-2 text-slate-700 hover:bg-blue-50">Semana 3</button>
+            <button data-week="4" class="nav-button w-auto text-sm md:text-base bg-white border border-slate-300 rounded-lg px-4 py-2 text-slate-700 hover:bg-blue-50">Semana 4</button>
         </nav>
 
         <main id="weekly-plan-container">
         </main>
 
-        <section class="mt-12 bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-stone-200">
+        <section class="mt-12 bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-slate-200">
             <div class="text-center mb-4">
-                <h2 class="text-2xl font-bold text-teal-900">📈 Progressão de Volume Semanal</h2>
-                <p class="text-stone-600 max-w-2xl mx-auto mt-1">Este gráfico mostra o total de quilómetros de corrida planeados para cada semana. Observe como o volume aumenta até à semana de pico e depois diminui para o polimento antes da prova.</p>
+                <h2 class="text-2xl font-bold text-blue-800">📈 Progressão de Volume Semanal (Corrida)</h2>
+                <p class="text-slate-600 max-w-2xl mx-auto mt-1">Acompanhe o total de quilómetros de corrida planeados para cada semana de Setembro, incluindo a prova.</p>
             </div>
             <div class="chart-container">
                 <canvas id="volumeChart"></canvas>
@@ -76,83 +75,51 @@
         document.addEventListener('DOMContentLoaded', function () {
             const trainingData = [
                 {
-                    week: 1,
-                    dates: '29/07 a 04/08',
-                    focus: 'Volume sobe',
-                    color: 'border-green-500',
-                    bgColor: 'bg-green-50',
-                    totalVolume: 36,
+                    week: 1, dates: '01/09 a 07/09', focus: 'Semana de Carga', color: 'border-green-500', bgColor: 'bg-green-50', totalVolume: 35.8,
                     days: [
-                        { day: 'Terça', icon: '🏃‍♂️', title: 'Intervalado', details: '<strong>5x 1000m</strong> a 4:50/km, com pausa de 2 min.' },
-                        { day: 'Quarta', icon: '❤️‍🩹', title: 'Regenerativo + Core', details: '<strong>7km leve</strong> a 5:50/km. <br>+ Prancha 2x 40s e Abdominal infra.' },
-                        { day: 'Quinta', icon: '⏱️', title: 'Ritmo Contínuo', details: '<strong>10km</strong>, com os últimos 4km a 5:15/km.' },
-                        { day: 'Sexta', icon: '💪', title: 'Força', details: 'Agachamento, Stiff, Panturrilha, Prancha.' },
-                        { day: 'Sábado', icon: '⛰️', title: 'Longo Progressivo', details: '<strong>14km</strong> no percurso da meia, progressivo leve.' },
-                        { day: 'Domingo', icon: '🍃', title: 'Descanso Ativo', details: '<strong>6km</strong> em trilha leve ou descanso total.' }
+                        { day: 'Segunda', icon: '🏋️', title: 'Força', details: 'Academia + Mobilidade' },
+                        { day: 'Terça', icon: '⚡', title: 'Intervalado', details: '2km aquece<br><strong>6x 800m</strong> 4:45/km (2’ cam)<br>1km desaq' },
+                        { day: 'Quarta', icon: '🏃‍♂️', title: 'Corrida Leve', details: '<strong>6km</strong> (pace 6:10 ~ 6:30/km)' },
+                        { day: 'Quinta', icon: '⏱️', title: 'Ritmo', details: '<strong>6km</strong> a 5:15/km' },
+                        { day: 'Sexta', icon: '🏋️', title: 'Força', details: 'Academia' },
+                        { day: 'Sábado', icon: '🧘', title: 'Descanso Ativo', details: 'Descanso ou mobilidade leve' },
+                        { day: 'Domingo', icon: '⛰️', title: 'Longo', details: '<strong>16km</strong>' }
                     ]
                 },
                 {
-                    week: 2,
-                    dates: '05/08 a 11/08',
-                    focus: 'Ritmo de prova + força',
-                    color: 'border-yellow-500',
-                    bgColor: 'bg-yellow-50',
-                    totalVolume: 41,
+                    week: 2, dates: '08/09 a 14/09', focus: 'Aumento de Volume', color: 'border-yellow-500', bgColor: 'bg-yellow-50', totalVolume: 43,
                     days: [
-                        { day: 'Terça', icon: '🏃‍♂️', title: 'Intervalado', details: '<strong>3x 2000m</strong> a 5:00/km, com pausa de 2 min 30s.' },
-                        { day: 'Quarta', icon: '❤️‍🩹', title: 'Regenerativo + Core', details: '<strong>8km leve</strong>. <br>+ Core (abdominal + mobilidade).' },
-                        { day: 'Quinta', icon: '⏱️', title: 'Ritmo Contínuo', details: '<strong>11km</strong>, com os 6km finais a 5:20/km.' },
-                        { day: 'Sexta', icon: '💪', title: 'Força', details: 'Ênfase em posterior e core.' },
-                        { day: 'Sábado', icon: '⛰️', title: 'Longo', details: '<strong>16km</strong> no percurso da prova.' },
-                        { day: 'Domingo', icon: '😴', title: 'Descanso Total', details: 'Descanso total para recuperação.' }
+                        { day: 'Segunda', icon: '🏋️', title: 'Força', details: 'Academia + Mobilidade' },
+                        { day: 'Terça', icon: '⚡', title: 'Intervalado', details: '2km aquece<br><strong>4x 2000m</strong> 5:00/km (3’ leve)<br>1km desaq' },
+                        { day: 'Quarta', icon: '🏃‍♂️', title: 'Corrida Leve', details: '<strong>6km</strong> (pace 6:10 ~ 6:30/km)' },
+                        { day: 'Quinta', icon: '⏱️', title: 'Ritmo Progressivo', details: '<strong>8km</strong> (5:30 → 5:00/km)' },
+                        { day: 'Sexta', icon: '🏋️', title: 'Força', details: 'Academia' },
+                        { day: 'Sábado', icon: '🧘', title: 'Descanso Ativo', details: 'Descanso ou mobilidade leve' },
+                        { day: 'Domingo', icon: '⛰️', title: 'Longo', details: '<strong>18km</strong>' }
                     ]
                 },
                 {
-                    week: 3,
-                    dates: '12/08 a 18/08',
-                    focus: 'Semana forte',
-                    color: 'border-orange-500',
-                    bgColor: 'bg-orange-50',
-                    totalVolume: 47.8,
+                    week: 3, dates: '15/09 a 21/09', focus: 'Início do Polimento (Taper)', color: 'border-orange-500', bgColor: 'bg-orange-50', totalVolume: 32,
                     days: [
-                        { day: 'Terça', icon: '🏃‍♂️', title: 'Intervalado', details: '<strong>6x 800m</strong> a 4:40/km, com pausa de 1 min 30s.' },
-                        { day: 'Quarta', icon: '❤️‍🩹', title: 'Regenerativo', details: '<strong>7km regenerativo</strong>. <br>+ Mobilidade.' },
-                        { day: 'Quinta', icon: '⏱️', title: 'Progressivo', details: '<strong>12km progressivo</strong>, de 6:00/km para 5:10/km.' },
-                        { day: 'Sexta', icon: '💪', title: 'Força + Corrida', details: 'Força + <strong>6km</strong> de corrida leve a 6:00/km.' },
-                        { day: 'Sábado', icon: '⛰️', title: 'Longo com Ritmo', details: '<strong>18km</strong>, com os últimos 5km a ritmo da meia.' },
-                        { day: 'Domingo', icon: '🍃', title: 'Descanso Ativo', details: '<strong>6km</strong> em trilha leve ou descanso total.' }
+                        { day: 'Segunda', icon: '🏋️', title: 'Força', details: 'Academia + Mobilidade' },
+                        { day: 'Terça', icon: '⚡', title: 'Intervalado', details: '2km aquece<br><strong>5x 1000m</strong> 4:50/km (2’ leve)<br>1km desaq' },
+                        { day: 'Quarta', icon: '🏃‍♂️', title: 'Corrida Leve', details: '<strong>6km</strong> (pace 6:10 ~ 6:30/km)' },
+                        { day: 'Quinta', icon: '⏱️', title: 'Ritmo Constante', details: '<strong>6km</strong> a 5:05/km' },
+                        { day: 'Sexta', icon: '🏋️', title: 'Força', details: 'Academia' },
+                        { day: 'Sábado', icon: '🧘', title: 'Descanso Ativo', details: 'Descanso ou mobilidade leve' },
+                        { day: 'Domingo', icon: '⛰️', title: 'Longo Leve', details: '<strong>12km</strong> (Taper)' }
                     ]
                 },
                 {
-                    week: 4,
-                    dates: '19/08 a 25/08',
-                    focus: 'Pico de volume',
-                    color: 'border-red-500',
-                    bgColor: 'bg-red-50',
-                    totalVolume: 47,
+                    week: 4, dates: '22/09 a 28/09', focus: 'Semana da Prova', color: 'border-red-500', bgColor: 'bg-red-50', totalVolume: 42.9,
                     days: [
-                        { day: 'Terça', icon: '🏃‍♂️', title: 'Intervalado', details: '<strong>4x 2000m</strong> a 5:00/km, com pausa de 2 min.' },
-                        { day: 'Quarta', icon: '❤️‍🩹', title: 'Regenerativo', details: '<strong>8km regenerativo</strong>.' },
-                        { day: 'Quinta', icon: '⏱️', title: 'Ritmo Controlado', details: '<strong>12km</strong>, com 8km a 5:15/km.' },
-                        { day: 'Sexta', icon: '💪', title: 'Força', details: 'Academia + mobilidade.' },
-                        { day: 'Sábado', icon: '⛰️', title: 'Longo com Ritmo', details: '<strong>19km</strong>, com os últimos 6km a 5:20/km.' },
-                        { day: 'Domingo', icon: '😴', title: 'Descanso Total', details: 'Descanso total para recuperação.' }
-                    ]
-                },
-                {
-                    week: 5,
-                    dates: '26/08 a 01/09',
-                    focus: 'Início do polimento',
-                    color: 'border-blue-500',
-                    bgColor: 'bg-blue-50',
-                    totalVolume: 38,
-                    days: [
-                        { day: 'Terça', icon: '🏃‍♂️', title: 'Intervalado', details: '<strong>4x 1000m</strong> a 4:45/km, com pausa de 1 min 30s.' },
-                        { day: 'Quarta', icon: '❤️‍🩹', title: 'Regenerativo', details: '<strong>6km leve</strong>. <br>+ Alongamento.' },
-                        { day: 'Quinta', icon: '⏱️', title: 'Ritmo Contínuo', details: '<strong>10km contínuo</strong> a 5:30/km.' },
-                        { day: 'Sexta', icon: '💪', title: 'Força Leve', details: 'Força leve (menos carga) + corrida leve.' },
-                        { day: 'Sábado', icon: '⛰️', title: 'Longo Fácil', details: '<strong>12km fácil</strong> a 5:50/km.' },
-                        { day: 'Domingo', icon: '🍃', title: 'Descanso Ativo', details: '<strong>6km</strong> em trilha leve ou descanso total.' }
+                        { day: 'Segunda', icon: '🏋️', title: 'Força', details: 'Academia + Mobilidade' },
+                        { day: 'Terça', icon: '⚡', title: 'Intervalado', details: '2km aquece<br><strong>3x 1600m</strong> 4:55/km (3’ leve)<br>1km desaq' },
+                        { day: 'Quarta', icon: '🏃‍♂️', title: 'Corrida Leve', details: '<strong>6km</strong> (pace 6:10 ~ 6:30/km)' },
+                        { day: 'Quinta', icon: '⏱️', title: 'Ritmo Leve', details: '5km leve + <strong>3km</strong> a 5:10/km' },
+                        { day: 'Sexta', icon: '🏋️', title: 'Força', details: 'Academia' },
+                        { day: 'Sábado', icon: '🧘', title: 'Descanso Total', details: 'Descanso total' },
+                        { day: 'Domingo', icon: '🏁', title: 'PROVA!', details: '<strong>Meia Maratona 21.1km</strong>' }
                     ]
                 }
             ];
@@ -168,20 +135,20 @@
                 container.innerHTML = `
                     <div id="week-${weekData.week}" class="week-content bg-white p-4 sm:p-6 rounded-2xl shadow-sm border ${weekData.color}">
                         <div class="text-center mb-6">
-                            <h3 class="text-2xl font-bold text-teal-900">Semana ${weekData.week} <span class="text-lg font-medium text-stone-500">(${weekData.dates})</span></h3>
-                            <p class="text-teal-800 font-semibold capitalize mt-1 p-2 rounded-md inline-block ${weekData.bgColor}">${weekData.focus}</p>
+                            <h3 class="text-2xl font-bold text-blue-800">Semana ${weekData.week} <span class="text-lg font-medium text-slate-500">(${weekData.dates})</span></h3>
+                             <p class="text-blue-700 font-semibold capitalize mt-1 p-2 rounded-md inline-block ${weekData.bgColor}">${weekData.focus}</p>
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-4">
                             ${weekData.days.map(day => `
-                                <div class="bg-stone-50 border border-stone-200 rounded-xl p-4 flex flex-col">
+                                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col h-full">
                                     <div class="flex items-center mb-2">
                                         <span class="text-2xl mr-3">${day.icon}</span>
                                         <div>
-                                            <h4 class="font-bold text-stone-800">${day.day}</h4>
-                                            <p class="text-sm text-stone-600">${day.title}</p>
+                                            <h4 class="font-bold text-slate-800">${day.day}</h4>
+                                            <p class="text-sm text-slate-600">${day.title}</p>
                                         </div>
                                     </div>
-                                    <div class="text-stone-700 text-sm mt-2 flex-grow">
+                                    <div class="text-slate-700 text-sm mt-2 flex-grow">
                                         ${day.details}
                                     </div>
                                 </div>
@@ -202,8 +169,8 @@
 
             function updateChartHighlight(weekNumber) {
                 if (volumeChart) {
-                    const activeColor = '#0d9488'; 
-                    const inactiveColor = '#9ca3af';
+                    const activeColor = '#1d4ed8'; 
+                    const inactiveColor = '#94a3b8';
 
                     volumeChart.data.datasets[0].backgroundColor = volumeChart.data.labels.map((label, index) => 
                         (index + 1) === weekNumber ? activeColor : inactiveColor
@@ -235,10 +202,10 @@
                     data: {
                         labels: labels,
                         datasets: [{
-                            label: 'Volume Total de Corrida (km)',
+                            label: 'Volume de Corrida (km)',
                             data: data,
-                            backgroundColor: '#9ca3af',
-                            borderColor: '#4b5563',
+                            backgroundColor: '#94a3b8',
+                            borderColor: '#475569',
                             borderWidth: 1,
                             borderRadius: 6
                         }]
@@ -246,58 +213,28 @@
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                display: false
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        return `Volume: ${context.parsed.y.toFixed(1)} km`;
-                                    }
-                                }
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                title: {
-                                    display: true,
-                                    text: 'Distância (km)'
-                                }
-                            },
-                            x: {
-                                grid: {
-                                    display: false
-                                }
-                            }
-                        }
+                        plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => `Volume: ${c.parsed.y.toFixed(1)} km` } } },
+                        scales: { y: { beginAtZero: true, title: { display: true, text: 'Distância (km)' } }, x: { grid: { display: false } } }
                     }
                 });
             }
             
             function getCurrentWeek(year) {
                 const now = new Date();
-                
                 for (const weekData of trainingData) {
                     const [startStr, endStr] = weekData.dates.split(' a ');
                     const [startDay, startMonth] = startStr.split('/').map(Number);
                     const [endDay, endMonth] = endStr.split('/').map(Number);
-
                     const startDate = new Date(year, startMonth - 1, startDay);
                     const endYear = (endMonth < startMonth) ? year + 1 : year;
                     const endDate = new Date(endYear, endMonth - 1, endDay);
                     endDate.setHours(23, 59, 59, 999);
-
-                    if (now >= startDate && now <= endDate) {
-                        return weekData.week;
-                    }
+                    if (now >= startDate && now <= endDate) return weekData.week;
                 }
                 return 1;
             }
 
             initializeChart();
-            
             const yearOfPlan = 2025;
             const activeWeek = getCurrentWeek(yearOfPlan);
             showWeek(activeWeek);
