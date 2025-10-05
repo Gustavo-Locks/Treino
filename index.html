@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plano de Treino Interativo – Meia Maratona (Setembro)</title>
+    <title>Desafio Sub20 — Gustavo (Plano Detalhado)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Chosen Palette: Cool Blue and Slate -->
-    <!-- Application Structure Plan: This application uses a weekly dashboard structure, which is ideal for a single-month, high-intensity training plan. Top navigation buttons allow the user to switch between the four weeks of September. The main view presents a 7-day grid of workout cards, providing a clear and comprehensive overview of the entire week's schedule. A bar chart visualizes the weekly running volume, highlighting the progression towards a peak in week 3 and the subsequent taper in week 4. This structure is highly intuitive for tracking a structured, progressive training load. -->
-    <!-- Visualization & Content Choices: Report Info: 4-week training schedule for a half marathon -> Goal: Organize & Inform -> Viz/Presentation: Interactive weekly views with a 7-day card grid (HTML/CSS). Interaction: Week selection buttons (JS). Justification: Provides a complete daily overview, which is necessary for a plan with varied activities like running, gym, and mobility. | Report Info: Weekly running distance -> Goal: Show Change/Progression -> Viz/Presentation: Bar Chart (Chart.js/Canvas). Interaction: Highlights the selected week's bar. Justification: Effectively communicates the training load's progression and tapering phase, culminating in the race week. -->
+    <!-- Chosen Palette: Amber and Slate -->
+    <!-- Application Structure Plan: This application uses a weekly dashboard structure, ideal for the 8-week plan. Top navigation buttons allow switching between weeks. The main view presents a 7-day grid of workout cards; the content of the key running days (Tuesday, Thursday, Saturday, Sunday) updates dynamically based on the selected week, while strength days remain consistent. This provides both a stable structural view and week-specific details. Separate, static sections are used for "Effort Zones," "Race Strategy," and "Final Tips" to keep this crucial reference information always accessible. A bar chart visualizes the weekly running volume. -->
+    <!-- Visualization & Content Choices: Report Info: 8-week training schedule -> Goal: Organize & Inform -> Viz/Presentation: Interactive weekly views with a dynamic 7-day card grid (HTML/CSS). Interaction: Week selection buttons (JS). Justification: Clearly presents the day-to-day plan while highlighting the progression in key workouts week over week. | Report Info: Weekly running distance -> Goal: Show Change/Progression -> Viz/Presentation: Bar Chart (Chart.js/Canvas). Interaction: Highlights the selected week's bar. Justification: Visualizes the training load progression and tapering phase. | Report Info: Reference data (Zones, Strategy) -> Goal: Inform -> Viz/Presentation: Static, well-formatted text sections/tables. Justification: This data is constant and serves as a reference throughout the plan, so it should be easily accessible. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
         body {
@@ -20,11 +20,10 @@
         .chart-container {
             position: relative;
             width: 100%;
-            max-width: 800px;
+            max-width: 900px;
             margin-left: auto;
             margin-right: auto;
             height: 300px;
-            max-height: 400px;
         }
         @media (min-width: 768px) {
             .chart-container {
@@ -32,96 +31,174 @@
             }
         }
         .nav-button.active {
-            background-color: #2563eb;
+            background-color: #d97706; /* amber-600 */
             color: #ffffff;
             font-weight: 600;
         }
         .nav-button {
             transition: all 0.3s ease;
         }
+        .workout-card-details {
+             font-size: 0.8rem;
+             line-height: 1.4;
+        }
+        .workout-card-details small {
+            color: #475569; /* slate-600 */
+        }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800">
+<body class="bg-slate-100 text-slate-800">
 
     <div class="container mx-auto p-4 md:p-8">
         <header class="text-center mb-8">
-            <h1 class="text-3xl md:text-4xl font-bold text-blue-800 mb-2">📅 Plano de Treino – Meia Maratona (Setembro 2025)</h1>
-            <p class="text-slate-600 max-w-3xl mx-auto">Seu plano de treino detalhado para a prova de 21.1km. Selecione a semana para ver as atividades de cada dia.</p>
+            <h1 class="text-3xl md:text-4xl font-bold text-amber-700 mb-2">🏁 Desafio Sub20 — Gustavo</h1>
+            <p class="text-slate-600 max-w-3xl mx-auto">Seu plano de 8 semanas para correr 5km abaixo de 20 minutos (Pace Alvo: 3:59/km).</p>
         </header>
 
         <nav class="flex flex-wrap justify-center gap-2 mb-8">
-            <button data-week="1" class="nav-button w-auto text-sm md:text-base bg-white border border-slate-300 rounded-lg px-4 py-2 text-slate-700 hover:bg-blue-50">Semana 1</button>
-            <button data-week="2" class="nav-button w-auto text-sm md:text-base bg-white border border-slate-300 rounded-lg px-4 py-2 text-slate-700 hover:bg-blue-50">Semana 2</button>
-            <button data-week="3" class="nav-button w-auto text-sm md:text-base bg-white border border-slate-300 rounded-lg px-4 py-2 text-slate-700 hover:bg-blue-50">Semana 3</button>
-            <button data-week="4" class="nav-button w-auto text-sm md:text-base bg-white border border-slate-300 rounded-lg px-4 py-2 text-slate-700 hover:bg-blue-50">Semana 4</button>
+            <button data-week="1" class="nav-button w-auto text-xs md:text-sm bg-white border border-slate-300 rounded-lg px-3 py-2 text-slate-700 hover:bg-amber-50">Semana 1</button>
+            <button data-week="2" class="nav-button w-auto text-xs md:text-sm bg-white border border-slate-300 rounded-lg px-3 py-2 text-slate-700 hover:bg-amber-50">Semana 2</button>
+            <button data-week="3" class="nav-button w-auto text-xs md:text-sm bg-white border border-slate-300 rounded-lg px-3 py-2 text-slate-700 hover:bg-amber-50">Semana 3</button>
+            <button data-week="4" class="nav-button w-auto text-xs md:text-sm bg-white border border-slate-300 rounded-lg px-3 py-2 text-slate-700 hover:bg-amber-50">Semana 4</button>
+            <button data-week="5" class="nav-button w-auto text-xs md:text-sm bg-white border border-slate-300 rounded-lg px-3 py-2 text-slate-700 hover:bg-amber-50">Semana 5</button>
+            <button data-week="6" class="nav-button w-auto text-xs md:text-sm bg-white border border-slate-300 rounded-lg px-3 py-2 text-slate-700 hover:bg-amber-50">Semana 6</button>
+            <button data-week="7" class="nav-button w-auto text-xs md:text-sm bg-white border border-slate-300 rounded-lg px-3 py-2 text-slate-700 hover:bg-amber-50">Semana 7</button>
+            <button data-week="8" class="nav-button w-auto text-xs md:text-sm bg-white border border-slate-300 rounded-lg px-3 py-2 text-slate-700 hover:bg-amber-50">Semana 8</button>
         </nav>
 
         <main id="weekly-plan-container">
         </main>
 
+        <section class="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8">
+             <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-slate-200">
+                 <h2 class="text-2xl font-bold text-amber-700 text-center mb-4">🔥 Zonas de Esforço</h2>
+                 <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left">
+                        <thead class="bg-slate-100">
+                            <tr>
+                                <th class="p-2 font-semibold">Zona</th>
+                                <th class="p-2 font-semibold">Ritmo</th>
+                                <th class="p-2 font-semibold">Sensação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b"><td class="p-2">Z1</td><td class="p-2">&gt;6:00/km</td><td class="p-2">Muito Leve (Regenerar)</td></tr>
+                            <tr class="border-b"><td class="p-2">Z2</td><td class="p-2">5:30–5:50/km</td><td class="p-2">Leve (Base Aeróbia)</td></tr>
+                            <tr class="border-b"><td class="p-2">Z3</td><td class="p-2">5:00–5:20/km</td><td class="p-2">Moderado (Resistência)</td></tr>
+                            <tr class="border-b"><td class="p-2">Z4</td><td class="p-2">4:30–4:45/km</td><td class="p-2">Forte (Limiar)</td></tr>
+                            <tr><td class="p-2">Z5</td><td class="p-2">3:55–4:05/km</td><td class="p-2">Muito Forte (Prova)</td></tr>
+                        </tbody>
+                    </table>
+                 </div>
+            </div>
+             <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-slate-200">
+                 <h2 class="text-2xl font-bold text-amber-700 text-center mb-4">🎯 Estratégia de Prova</h2>
+                 <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left">
+                         <thead class="bg-slate-100">
+                            <tr>
+                                <th class="p-2 font-semibold">Km</th>
+                                <th class="p-2 font-semibold">Ritmo Sugerido</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b"><td class="p-2">Km 1</td><td class="p-2 font-semibold text-amber-800">4:02–4:05</td></tr>
+                            <tr class="border-b"><td class="p-2">Km 2–3</td><td class="p-2 font-semibold text-amber-800">3:58–4:00</td></tr>
+                            <tr class="border-b"><td class="p-2">Km 4</td><td class="p-2 font-semibold text-amber-800">3:55–3:58</td></tr>
+                            <tr><td class="p-2">Km 5</td><td class="p-2 font-semibold text-amber-800">3:50–3:55</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-xs text-slate-600 mt-2 text-center"><strong>Aquecimento:</strong> 10–15min trote + mobilidade + 4–6 strides.</p>
+            </div>
+        </section>
+
         <section class="mt-12 bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-slate-200">
             <div class="text-center mb-4">
-                <h2 class="text-2xl font-bold text-blue-800">📈 Progressão de Volume Semanal (Corrida)</h2>
-                <p class="text-slate-600 max-w-2xl mx-auto mt-1">Acompanhe o total de quilómetros de corrida planeados para cada semana de Setembro, incluindo a prova.</p>
+                <h2 class="text-2xl font-bold text-amber-700">📈 Progressão de Volume Semanal (Corrida)</h2>
+                <p class="text-slate-600 max-w-2xl mx-auto mt-1">Volume de corrida exato para cada semana do plano.</p>
             </div>
             <div class="chart-container">
                 <canvas id="volumeChart"></canvas>
             </div>
         </section>
-
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const trainingData = [
-                {
-                    week: 1, dates: '01/09 a 07/09', focus: 'Semana de Carga', color: 'border-green-500', bgColor: 'bg-green-50', totalVolume: 35.8,
-                    days: [
-                        { day: 'Segunda', icon: '🏋️', title: 'Força', details: 'Academia + Mobilidade' },
-                        { day: 'Terça', icon: '⚡', title: 'Intervalado', details: '2km aquece<br><strong>6x 800m</strong> 4:45/km (2’ cam)<br>1km desaq' },
-                        { day: 'Quarta', icon: '🏃‍♂️', title: 'Corrida Leve', details: '<strong>6km</strong> (pace 6:10 ~ 6:30/km)' },
-                        { day: 'Quinta', icon: '⏱️', title: 'Ritmo', details: '<strong>6km</strong> a 5:15/km' },
-                        { day: 'Sexta', icon: '🏋️', title: 'Força', details: 'Academia' },
-                        { day: 'Sábado', icon: '🧘', title: 'Descanso Ativo', details: 'Descanso ou mobilidade leve' },
-                        { day: 'Domingo', icon: '⛰️', title: 'Longo', details: '<strong>16km</strong>' }
-                    ]
-                },
-                {
-                    week: 2, dates: '08/09 a 14/09', focus: 'Aumento de Volume', color: 'border-yellow-500', bgColor: 'bg-yellow-50', totalVolume: 43,
-                    days: [
-                        { day: 'Segunda', icon: '🏋️', title: 'Força', details: 'Academia + Mobilidade' },
-                        { day: 'Terça', icon: '⚡', title: 'Intervalado', details: '2km aquece<br><strong>4x 2000m</strong> 5:00/km (3’ leve)<br>1km desaq' },
-                        { day: 'Quarta', icon: '🏃‍♂️', title: 'Corrida Leve', details: '<strong>6km</strong> (pace 6:10 ~ 6:30/km)' },
-                        { day: 'Quinta', icon: '⏱️', title: 'Ritmo Progressivo', details: '<strong>8km</strong> (5:30 → 5:00/km)' },
-                        { day: 'Sexta', icon: '🏋️', title: 'Força', details: 'Academia' },
-                        { day: 'Sábado', icon: '🧘', title: 'Descanso Ativo', details: 'Descanso ou mobilidade leve' },
-                        { day: 'Domingo', icon: '⛰️', title: 'Longo', details: '<strong>18km</strong>' }
-                    ]
-                },
-                {
-                    week: 3, dates: '15/09 a 21/09', focus: 'Início do Polimento (Taper)', color: 'border-orange-500', bgColor: 'bg-orange-50', totalVolume: 32,
-                    days: [
-                        { day: 'Segunda', icon: '🏋️', title: 'Força', details: 'Academia + Mobilidade' },
-                        { day: 'Terça', icon: '⚡', title: 'Intervalado', details: '2km aquece<br><strong>5x 1000m</strong> 4:50/km (2’ leve)<br>1km desaq' },
-                        { day: 'Quarta', icon: '🏃‍♂️', title: 'Corrida Leve', details: '<strong>6km</strong> (pace 6:10 ~ 6:30/km)' },
-                        { day: 'Quinta', icon: '⏱️', title: 'Ritmo Constante', details: '<strong>6km</strong> a 5:05/km' },
-                        { day: 'Sexta', icon: '🏋️', title: 'Força', details: 'Academia' },
-                        { day: 'Sábado', icon: '🧘', title: 'Descanso Ativo', details: 'Descanso ou mobilidade leve' },
-                        { day: 'Domingo', icon: '⛰️', title: 'Longo Leve', details: '<strong>12km</strong> (Taper)' }
-                    ]
-                },
-                {
-                    week: 4, dates: '22/09 a 28/09', focus: 'Semana da Prova', color: 'border-red-500', bgColor: 'bg-red-50', totalVolume: 42.9,
-                    days: [
-                        { day: 'Segunda', icon: '🏋️', title: 'Força', details: 'Academia + Mobilidade' },
-                        { day: 'Terça', icon: '⚡', title: 'Intervalado', details: '2km aquece<br><strong>3x 1600m</strong> 4:55/km (3’ leve)<br>1km desaq' },
-                        { day: 'Quarta', icon: '🏃‍♂️', title: 'Corrida Leve', details: '<strong>6km</strong> (pace 6:10 ~ 6:30/km)' },
-                        { day: 'Quinta', icon: '⏱️', title: 'Ritmo Leve', details: '5km leve + <strong>3km</strong> a 5:10/km' },
-                        { day: 'Sexta', icon: '🏋️', title: 'Força', details: 'Academia' },
-                        { day: 'Sábado', icon: '🧘', title: 'Descanso Total', details: 'Descanso total' },
-                        { day: 'Domingo', icon: '🏁', title: 'PROVA!', details: '<strong>Meia Maratona 21.1km</strong>' }
-                    ]
-                }
+                { week: 1, dates: '07/10 a 13/10', totalVolume: 39.3, days: [
+                    { day: 'Segunda', icon: '🏋️', title: 'Força', details: 'Foco: Glúteos, Quadríceps, Core' },
+                    { day: 'Terça', icon: '⚡', title: 'Intervalado', details: '<strong>6x 400m</strong> @ 4:05/km<br><small>(Rec: 200m trote)</small>' },
+                    { day: 'Quarta', icon: '🏃‍♂️', title: 'Rodagem', details: '<strong>40 min</strong> fácil<br><small>+ mobilidade</small>' },
+                    { day: 'Quinta', icon: '⏱️', title: 'Limiar', details: '<strong>20 min</strong> @ 4:40/km<br><small>+ 10 min fácil</small>' },
+                    { day: 'Sexta', icon: '🏋️', title: 'Força', details: 'Foco: Força e Core' },
+                    { day: 'Sábado', icon: '⛰️', title: 'Longo', details: '<strong>14km</strong> trilha<br><small>Ritmo Z2-Z3</small>' },
+                    { day: 'Domingo', icon: '💨', title: 'Progressivo', details: '<strong>7km</strong><br><small>(5:20 → 4:30/km)</small>' }
+                ]},
+                { week: 2, dates: '14/10 a 20/10', totalVolume: 38.0, days: [
+                    { day: 'Segunda', icon: '🏋️', title: 'Força', details: 'Foco: Glúteos, Quadríceps, Core' },
+                    { day: 'Terça', icon: '⚡', title: 'Intervalado', details: '<strong>5x 800m</strong> @ 4:00/km<br><small>(Rec: 400m trote)</small>' },
+                    { day: 'Quarta', icon: '🏃‍♂️', title: 'Rodagem', details: '<strong>35-45 min</strong> fácil<br><small>+ técnica de corrida</small>' },
+                    { day: 'Quinta', icon: '⏱️', title: 'Limiar', details: '<strong>2x 10 min</strong> @ 4:40/km<br><small>(Rec: 3 min trote)</small>' },
+                    { day: 'Sexta', icon: '🏋️', title: 'Força', details: 'Foco: Força e Core' },
+                    { day: 'Sábado', icon: '⛰️', title: 'Longo', details: '<strong>12-14km</strong> fácil<br><small>Ritmo Z2</small>' },
+                    { day: 'Domingo', icon: '💨', title: 'Rodagem + Strides', details: '<strong>40 min</strong> fácil<br><small>+ 8x 100m strides</small>' }
+                ]},
+                { week: 3, dates: '21/10 a 27/10', totalVolume: 30.2, days: [
+                    { day: 'Segunda', icon: '🏋️', title: 'Força', details: 'Foco: Glúteos, Quadríceps, Core' },
+                    { day: 'Terça', icon: '⚡', title: 'Intervalado', details: '<strong>12x 400m</strong> @ 3:58/km<br><small>(Rec: 200m trote)</small>' },
+                    { day: 'Quarta', icon: '🧘', title: 'Descanso Ativo', details: 'Mobilidade ou rodagem muito leve' },
+                    { day: 'Quinta', icon: '⏱️', title: 'Limiar', details: '<strong>5km contínuos</strong><br><small>@ 4:40/km</small>' },
+                    { day: 'Sexta', icon: '🏋️', title: 'Força', details: 'Foco: Força e Core' },
+                    { day: 'Sábado', icon: '⛰️', title: 'Longo', details: '<strong>70 min</strong> fácil<br><small>Ritmo Z2</small>' },
+                    { day: 'Domingo', icon: '💨', title: 'Hill Sprints', details: '<strong>40 min</strong> fácil<br><small>+ 6x 10s subida</small>' }
+                ]},
+                { week: 4, dates: '28/10 a 03/11', totalVolume: 25.0, days: [
+                    { day: 'Segunda', icon: '🏋️', title: 'Força', details: 'Foco: Glúteos, Quadríceps, Core' },
+                    { day: 'Terça', icon: '⚡', title: 'Intervalado', details: '<strong>4x 1000m</strong> @ 4:00/km<br><small>(Rec: 2 min trote)</small>' },
+                    { day: 'Quarta', icon: '🧘', title: 'Descanso Ativo', details: 'Mobilidade ou rodagem muito leve' },
+                    { day: 'Quinta', icon: '⏱️', title: 'Limiar', details: '<strong>3x 8 min</strong> @ 4:40/km<br><small>(Rec: 2 min)</small>' },
+                    { day: 'Sexta', icon: '🏋️', title: 'Força', details: 'Foco: Força e Core' },
+                    { day: 'Sábado', icon: '⛰️', title: 'Longo', details: '<strong>10-12km</strong> fácil' },
+                    { day: 'Domingo', icon: '💨', title: 'Time Trial', details: '<strong>3km forte</strong><br><small>Ritmo 4:00-4:05/km</small>' }
+                ]},
+                { week: 5, dates: '04/11 a 10/11', totalVolume: 27.2, days: [
+                    { day: 'Segunda', icon: '🏋️', title: 'Força', details: 'Foco: Glúteos, Quadríceps, Core' },
+                    { day: 'Terça', icon: '⚡', title: 'Intervalado', details: '<strong>Pirâmide 200 a 800m</strong><br><small>@ 3:55-4:00/km</small>' },
+                     { day: 'Quarta', icon: '🧘', title: 'Descanso Ativo', details: 'Mobilidade ou rodagem muito leve' },
+                    { day: 'Quinta', icon: '⏱️', title: 'Limiar', details: '<strong>25 min contínuos</strong><br><small>@ 4:35/km</small>' },
+                    { day: 'Sexta', icon: '🏋️', title: 'Força', details: 'Foco: Força e Core' },
+                    { day: 'Sábado', icon: '⛰️', title: 'Longo', details: '<strong>10-12km</strong> fácil' },
+                    { day: 'Domingo', icon: '💨', title: 'Rodagem + Strides', details: '<strong>40 min</strong> fácil<br><small>+ 8x 100m strides</small>' }
+                ]},
+                { week: 6, dates: '11/11 a 17/11', totalVolume: 29.2, days: [
+                    { day: 'Segunda', icon: '🏋️', title: 'Força', details: 'Foco: Glúteos, Quadríceps, Core' },
+                    { day: 'Terça', icon: '⚡', title: 'Intervalado', details: '<strong>6x 800m</strong> @ 3:55/km<br><small>(Rec: 2 min trote)</small>' },
+                     { day: 'Quarta', icon: '🧘', title: 'Descanso Ativo', details: 'Mobilidade ou rodagem muito leve' },
+                    { day: 'Quinta', icon: '⏱️', title: 'Limiar', details: '<strong>3x 7 min</strong> @ 4:35/km<br><small>(Rec: 2 min)</small>' },
+                    { day: 'Sexta', icon: '🏋️', title: 'Força', details: 'Foco: Força e Core' },
+                    { day: 'Sábado', icon: '⛰️', title: 'Longo', details: '<strong>60 min</strong> fácil' },
+                    { day: 'Domingo', icon: '💨', title: 'Hill Sprints', details: '<strong>30 min</strong> fácil<br><small>+ 6x 10s subida</small>' }
+                ]},
+                { week: 7, dates: '18/11 a 24/11', totalVolume: 29.0, days: [
+                    { day: 'Segunda', icon: '🏋️', title: 'Força', details: 'Foco: Glúteos, Quadríceps, Core' },
+                    { day: 'Terça', icon: '⚡', title: 'Intervalado', details: '<strong>5x 1000m</strong> @ 3:59/km<br><small>(Rec: 2 min trote)</small>' },
+                    { day: 'Quarta', icon: '🧘', title: 'Descanso Ativo', details: 'Mobilidade ou rodagem muito leve' },
+                    { day: 'Quinta', icon: '⏱️', title: 'Limiar', details: '<strong>20 min</strong> @ 4:35/km<br><small>+ 4x 200m @ 3:45/km</small>' },
+                    { day: 'Sexta', icon: '🏋️', title: 'Força', details: 'Foco: Força e Core' },
+                    { day: 'Sábado', icon: '⛰️', title: 'Longo', details: '<strong>10km</strong> fácil' },
+                    { day: 'Domingo', icon: '💨', title: 'Rodagem + Strides', details: '<strong>40 min</strong> fácil<br><small>+ 6x 100m strides</small>' }
+                ]},
+                { week: 8, dates: '25/11 a 01/12', totalVolume: 19.3, days: [
+                    { day: 'Segunda', icon: '🏋️', title: 'Força', details: 'Foco: Glúteos, Quadríceps, Core' },
+                    { day: 'Terça', icon: '⚡', title: 'Intervalado', details: '<strong>3x 800m</strong> @ 3:58/km<br><small>(Rec: 2 min trote)</small>' },
+                    { day: 'Quarta', icon: '🧘', title: 'Descanso Ativo', details: 'Mobilidade ou rodagem muito leve' },
+                    { day: 'Quinta', icon: '⏱️', title: 'Limiar', details: '<strong>15 min</strong> @ 4:35/km<br><small>+ 3x 200m @ 3:45/km</small>' },
+                    { day: 'Sexta', icon: '🧘', title: 'Descanso', details: 'Descanso total ou mobilidade' },
+                    { day: 'Sábado', icon: '⛰️', title: 'Rodagem Leve', details: '<strong>20-30 min</strong> leve<br><small>+ 4 strides</small>' },
+                    { day: 'Domingo', icon: '🏁', title: 'PROVA!', details: '<strong>5km - Meta &lt; 20:00</strong>' }
+                ]}
             ];
 
             const container = document.getElementById('weekly-plan-container');
@@ -133,10 +210,9 @@
                 if (!weekData) return;
 
                 container.innerHTML = `
-                    <div id="week-${weekData.week}" class="week-content bg-white p-4 sm:p-6 rounded-2xl shadow-sm border ${weekData.color}">
+                    <div id="week-${weekData.week}" class="week-content bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-amber-500">
                         <div class="text-center mb-6">
-                            <h3 class="text-2xl font-bold text-blue-800">Semana ${weekData.week} <span class="text-lg font-medium text-slate-500">(${weekData.dates})</span></h3>
-                             <p class="text-blue-700 font-semibold capitalize mt-1 p-2 rounded-md inline-block ${weekData.bgColor}">${weekData.focus}</p>
+                            <h3 class="text-2xl font-bold text-amber-700">Semana ${weekData.week} <span class="text-lg font-medium text-slate-500">(${weekData.dates})</span></h3>
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-4">
                             ${weekData.days.map(day => `
@@ -145,10 +221,10 @@
                                         <span class="text-2xl mr-3">${day.icon}</span>
                                         <div>
                                             <h4 class="font-bold text-slate-800">${day.day}</h4>
-                                            <p class="text-sm text-slate-600">${day.title}</p>
+                                            <p class="text-sm text-amber-700 font-semibold">${day.title}</p>
                                         </div>
                                     </div>
-                                    <div class="text-slate-700 text-sm mt-2 flex-grow">
+                                    <div class="text-slate-700 workout-card-details mt-2 flex-grow">
                                         ${day.details}
                                     </div>
                                 </div>
@@ -169,9 +245,8 @@
 
             function updateChartHighlight(weekNumber) {
                 if (volumeChart) {
-                    const activeColor = '#1d4ed8'; 
+                    const activeColor = '#b45309'; 
                     const inactiveColor = '#94a3b8';
-
                     volumeChart.data.datasets[0].backgroundColor = volumeChart.data.labels.map((label, index) => 
                         (index + 1) === weekNumber ? activeColor : inactiveColor
                     );
@@ -199,20 +274,12 @@
 
                 volumeChart = new Chart(ctx, {
                     type: 'bar',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: 'Volume de Corrida (km)',
-                            data: data,
-                            backgroundColor: '#94a3b8',
-                            borderColor: '#475569',
-                            borderWidth: 1,
-                            borderRadius: 6
-                        }]
+                    data: { labels: labels, datasets: [{
+                            label: 'Volume de Corrida (km)', data: data, backgroundColor: '#94a3b8',
+                            borderColor: '#475569', borderWidth: 1, borderRadius: 6 }]
                     },
                     options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
+                        responsive: true, maintainAspectRatio: false,
                         plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => `Volume: ${c.parsed.y.toFixed(1)} km` } } },
                         scales: { y: { beginAtZero: true, title: { display: true, text: 'Distância (km)' } }, x: { grid: { display: false } } }
                     }
@@ -221,16 +288,18 @@
             
             function getCurrentWeek(year) {
                 const now = new Date();
-                for (const weekData of trainingData) {
-                    const [startStr, endStr] = weekData.dates.split(' a ');
-                    const [startDay, startMonth] = startStr.split('/').map(Number);
-                    const [endDay, endMonth] = endStr.split('/').map(Number);
-                    const startDate = new Date(year, startMonth - 1, startDay);
-                    const endYear = (endMonth < startMonth) ? year + 1 : year;
-                    const endDate = new Date(endYear, endMonth - 1, endDay);
-                    endDate.setHours(23, 59, 59, 999);
-                    if (now >= startDate && now <= endDate) return weekData.week;
+                // Start date of the plan is October 7th, 2025
+                const planStartDate = new Date(year, 9, 7); // Month is 0-indexed, so 9 is October
+
+                const diffTime = Math.abs(now - planStartDate);
+                const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                const currentWeek = Math.floor(diffDays / 7) + 1;
+
+                if (currentWeek > 0 && currentWeek <= 8) {
+                    return currentWeek;
                 }
+                
+                // If before the plan starts or after it ends, default to week 1
                 return 1;
             }
 
@@ -240,6 +309,5 @@
             showWeek(activeWeek);
         });
     </script>
-
 </body>
 </html>
